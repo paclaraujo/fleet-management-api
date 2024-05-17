@@ -1,0 +1,251 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API de Taxis",
+    "version": "1.0.0",
+    "description": "API para operações relacionadas a táxis"
+  },
+  "paths": {
+    "/api/taxis": {
+      "get": {
+        "summary": "Listar todos os táxis",
+        "description": "Retorna uma lista paginada de todos os táxis.",
+        "tags": [
+          "Táxis"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "description": "Número da página a ser recuperada",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "Número máximo de registros por página",
+            "schema": {
+              "type": "integer",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista paginada de táxis",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "totalPages": {
+                      "type": "integer",
+                      "description": "Número total de páginas"
+                    },
+                    "currentPage": {
+                      "type": "integer",
+                      "description": "Número da página atual"
+                    },
+                    "taxis": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/taxis"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor"
+          }
+        }
+      }
+    },
+    "/api/taxis/{id}/locations": {
+      "get": {
+        "summary": "Consultar todas as localizações de um táxi por data",
+        "description": "Retorna uma lista paginada de todas as localizações de um táxi dado o ID do táxi e uma data.",
+        "tags": [
+          "Táxis"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "ID do táxi",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "date",
+            "description": "Data para consulta das localizações (formato: YYYY-MM-DD)",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "description": "Número da página a ser recuperada",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "Número máximo de registros por página",
+            "schema": {
+              "type": "integer",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista paginada de localizações do táxi",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "totalPages": {
+                      "type": "integer",
+                      "description": "Número total de páginas"
+                    },
+                    "currentPage": {
+                      "type": "integer",
+                      "description": "Número da página atual"
+                    },
+                    "locations": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/trajectories"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor"
+          }
+        }
+      }
+    },
+    "/api/taxis/last-locations": {
+      "get": {
+        "summary": "Consultar a última localização reportada por cada táxi",
+        "description": "Retorna uma lista paginada da última localização de cada táxi.",
+        "tags": [
+          "Táxis"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "description": "Número da página a ser recuperada",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "Número máximo de registros por página",
+            "schema": {
+              "type": "integer",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista paginada das últimas localizações dos táxis",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "totalPages": {
+                      "type": "integer",
+                      "description": "Número total de páginas"
+                    },
+                    "currentPage": {
+                      "type": "integer",
+                      "description": "Número da página atual"
+                    },
+                    "lastLocations": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/trajectories"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "taxis": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "ID do táxi"
+          },
+          "plate": {
+            "type": "string",
+            "description": "Placa do táxi"
+          }
+        }
+      },
+      "trajectories": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "ID da localização"
+          },
+          "date": {
+            "type": "string",
+            "description": "Data da localização",
+            "format": "date-time"
+          },
+          "latitude": {
+            "type": "number",
+            "description": "Latitude da localização"
+          },
+          "longitude": {
+            "type": "number",
+            "description": "Longitude da localização"
+          },
+          "taxi_id": {
+            "type": "integer",
+            "description": "ID do táxi"
+          }
+        }
+      }
+    }
+  }
+}

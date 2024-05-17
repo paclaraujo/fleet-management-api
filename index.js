@@ -4,37 +4,10 @@ const swaggerjsdoc = require("swagger-jsdoc");
 const swaggerui = require("swagger-ui-express");
 const app = express();
 const port = process.env.PORT || 3000;
-
-const options = {
-  definition: {
-    openapi: "3.0.0",
-    info: {
-      title: "Arif Books Express API with Swagger",
-      version: "0.1.0",
-      description:
-        "This is a simple Book API application made with Express and documented with Swagger",
-      license: {
-        name: "MIT",
-        url: "https://spdx.org/licenses/MIT.html",
-      },
-      contact: {
-        name: "skills with arif",
-        url: "arif.com",
-        email: "info@email.com",
-      },
-    },
-    servers: [
-      {
-        url: "http://localhost:3000/",
-      },
-    ],
-  },
-  apis: ["./routes/*.js"],
-};
-
+const swaggerDocument = require('./swagger.json'); 
 
 const taxisRouter = require('./routes/taxis');
-const swagger = swaggerjsdoc(options);
+const swagger = swaggerjsdoc({definition: swaggerDocument, apis: ["./routes/*.js"],});
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
