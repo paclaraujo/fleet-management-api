@@ -5,11 +5,12 @@ const swaggerui = require("swagger-ui-express");
 const app = express();
 const port = process.env.PORT || 3000;
 const swaggerDocument = require('./swagger.json');
-require('swagger-ui-dist/swagger-ui.css');
+const pathToSwaggerUi = require('swagger-ui-dist/swagger-ui.css');
 
 
 const taxisRouter = require('./routes/taxis');
 const swagger = swaggerjsdoc({definition: swaggerDocument, apis: ["./routes/*.js"],});
+const CSS_URL = "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui.min.css";
 
 app.use(express.static(pathToSwaggerUi));
 
@@ -19,7 +20,7 @@ app.use(express.urlencoded({ extended: false }));
 
 
 app.use('/', taxisRouter);
-app.use('/docs', swaggerui.serve, swaggerui.setup(swagger));
+app.use('/docs', swaggerui.serve, swaggerui.setup(swagger, { customCssUrl: pathToSwaggerUi }));
 
 app.use(function(req, res, next) {
   next(createError(404));
