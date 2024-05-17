@@ -5,8 +5,6 @@ const swaggerui = require("swagger-ui-express");
 const app = express();
 const port = process.env.PORT || 3000;
 const swaggerDocument = require('./swagger.json');
-// const pathToSwaggerUi = require('swagger-ui-dist/swagger-ui.css');
-
 
 const taxisRouter = require('./routes/taxis');
 const swagger = swaggerjsdoc({definition: swaggerDocument, apis: ["./routes/*.js"],});
