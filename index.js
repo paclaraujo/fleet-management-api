@@ -8,7 +8,7 @@ const swaggerDocument = require('./swagger.json');
 
 const taxisRouter = require('./routes/taxis');
 const swagger = swaggerjsdoc({definition: swaggerDocument, apis: ["./routes/*.js"],});
-const CSS_URL = "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui.css";
+const CSS_URL = require("swagger-ui/dist/swagger-ui.css");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
